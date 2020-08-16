@@ -4,8 +4,8 @@ SEURAAVAKSI LISÄÄ KOKO PISTEENLASKU OMAAN FUNKTIOON?
 TESTAA pelattu SWITCHIN KÄYTTÖ TESTI2.DB
 """
 
-# conn = sqlite3.connect(':memory:')
-conn = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
+conn = sqlite3.connect(':memory:')
+# conn = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
 
 cur = conn.cursor()
 
@@ -36,28 +36,18 @@ cur.execute("""CREATE TABLE IF NOT EXISTS veikkaukset(
 
 # Ottelu_lista = [('Rus-Sau'), ('Egt-Uru'), ('Mor-Ira'), ('Por-Spa'), ('Fra-Aus'), ('Arg-Ice'), ('Per-Den'), ('Cro-Nig'), ('Cos-Ser'), ('Ger-Mex')]
 # Ottelu_lista = [('Rus-Sau', None), ('Egt-Uru', None), ('Mor-Ira', None), ('Por-Spa', None), ('Fra-Aus', None), ('Arg-Ice', None), ('Per-Den', None), ('Cro-Nig', None), ('Cos-Ser', None), ('Ger-Mex', None)]
-Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', None), ('Fra-Aus', None), ('Arg-Ice', None), ('Per-Den', None), ('Cro-Nig', None), ('Cos-Ser', None), ('Ger-Mex', None)]
+Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', '3-3'), ('Fra-Aus', None), ('Arg-Ice', None), ('Per-Den', None), ('Cro-Nig', None), ('Cos-Ser', None), ('Ger-Mex', None)]
 Osallistujat_lista = [('Kingis', 0), ('Matti', 0), ('Jussi', 0)]
 Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'), (1, 5, '1-1'),
                      (2, 1, '2-0'), (2, 2, '1-3'), (2, 3, '1-1'), (2, 4, '2-1'), (2, 5, '2-0'),
                      (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0')]
 
 
-# cur.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
-# cur.executemany("INSERT INTO osallistujat(osallistuja, pisteet) VALUES (?, ?)", Osallistujat_lista)
-# cur.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
-# conn.commit()
+cur.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
+cur.executemany("INSERT INTO osallistujat(osallistuja, pisteet) VALUES (?, ?)", Osallistujat_lista)
+cur.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
+conn.commit()
 
-# cur.execute("UPDATE tulokset SET tulos = ('{}') WHERE tulokset.id = 1".format(tulos1))
-
-# cur.execute("SELECT * FROM tulokset")
-# print(cur.fetchall())
-#
-# cur.execute("SELECT * FROM osallistujat")
-# print(cur.fetchall())
-#
-# cur.execute("SELECT * FROM veikkaukset ORDER BY osallistuja_id")
-# print(cur.fetchall())
 
 tulokset = cur.execute("SELECT * FROM tulokset ORDER BY tulos_id")
 tulokset = tulokset.fetchall()
@@ -73,7 +63,10 @@ osallistujat = osallistujat.fetchall()
 print(osallistujat)
 
 
-def laske_yksiristikaksi(tulos, veikkaus):
+def laske_pisteet(tulos, veikkaus):
+
+    pisteet = 0
+
     if tulos[0] < tulos[2]:
         tulos_yksiristikaksi = "2"
     elif tulos[0] > tulos[2]:
@@ -88,7 +81,16 @@ def laske_yksiristikaksi(tulos, veikkaus):
     else:
         veikkaus_yksiristikaksi = "x"
 
-    return tulos_yksiristikaksi, veikkaus_yksiristikaksi
+    if veikkaus_yksiristikaksi == tulos_yksiristikaksi:
+        pisteet += 1
+
+        if veikkaus[0] == tulos[0]:
+            pisteet += 1
+        if veikkaus[2] == tulos[2]:
+            pisteet += 1
+
+    return pisteet
+
 
 
 for tulosrivi in tulokset:
@@ -97,46 +99,48 @@ for tulosrivi in tulokset:
         if tulosrivi[0] == veikkausrivi[2]:
             print("------------")
             osallistujat_dict = {1: 'Kingis', 2: 'Matti', 3: 'Jussi'}
-            pisteet = 0
+            tulos_id = tulosrivi[0]
             tulos = tulosrivi[2]
-            veikkaus = veikkausrivi[3]
+            pelattu_switch = tulosrivi[3]
             veikkaajan_id = veikkausrivi[1]
+            veikkaus = veikkausrivi[3]
 
             print(f"{osallistujat_dict[veikkaajan_id]} veikkaus {veikkaus}, tulos {tulos}")
 
             if not tulos:
                 continue
 
-            tulos_yksiristikaksi, veikkaus_yksiristikaksi = laske_yksiristikaksi(tulos, veikkaus)
-
-            if veikkaus_yksiristikaksi == tulos_yksiristikaksi:
-                pisteet += 1
-
-                if veikkaus[0] == tulos[0]:
-                    pisteet += 1
-                if veikkaus[2] == tulos[2]:
-                    pisteet += 1
-
-            if pisteet > 0:
-                print(f"lisätään {pisteet} pistettä osallistuja id:lle {osallistujat_dict[veikkaajan_id]}")
-
-                # HAE tämän hetkisen osallistujan pistetiedot, sijoita ne vanhat_pisteet muuttujaan, lisää siihen uudet pisteet
-                cur.execute("SELECT pisteet FROM osallistujat WHERE osallistuja_id = ('{}')".format(veikkaajan_id))
-                vanhat_pisteet = cur.fetchone()
-                pisteet = vanhat_pisteet[0] + pisteet
-
-                # SIJOITA uudelleen lasketut pisteet takaisin tietokantaan saman osallistujan pistetietoihin
-                cur.execute(
-                    "UPDATE osallistujat SET pisteet = ('{}') WHERE osallistuja_id = ('{}')".format(pisteet,
-                                                                                                    veikkaajan_id))
+            elif not pelattu_switch:
+                cur.execute("UPDATE tulokset SET pelattu = ('{}') WHERE tulos_id = ('{}')".format(1, tulos_id))
                 conn.commit()
 
+                pisteet = laske_pisteet(tulos, veikkaus)
+
+                if pisteet > 0:
+                    print(f"lisätään {pisteet} pistettä osallistuja id:lle {osallistujat_dict[veikkaajan_id]}")
+
+                    # HAE tämän hetkisen osallistujan pistetiedot, sijoita ne vanhat_pisteet muuttujaan, lisää siihen uudet pisteet
+                    cur.execute("SELECT pisteet FROM osallistujat WHERE osallistuja_id = ('{}')".format(veikkaajan_id))
+                    vanhat_pisteet = cur.fetchone()
+                    pisteet = vanhat_pisteet[0] + pisteet
+
+                    # SIJOITA uudelleen lasketut pisteet takaisin tietokantaan saman osallistujan pistetietoihin
+                    cur.execute(
+                        "UPDATE osallistujat SET pisteet = ('{}') WHERE osallistuja_id = ('{}')".format(pisteet,
+                                                                                                        veikkaajan_id))
+                    conn.commit()
+
+                else:
+                    print("Ei pisteitä...")
+
             else:
-                print("Ei pisteitä...")
-
-
-
+                print("Ottelun pisteet on laskettu jo, siirrytään seuraavaan otteluun...")
 
 
 cur.execute("SELECT * FROM osallistujat")
-print(cur.fetchall())
+data2 = (cur.fetchall())
+[print(row) for row in data2]
+
+cur.execute("SELECT * FROM tulokset")
+data = (cur.fetchall())
+[print(row) for row in data]

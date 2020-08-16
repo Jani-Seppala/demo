@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6ba562af-72ec-4a12-96d4-b1fa3d6de6a9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/tietokantaharjoittelu3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/testi.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/testi.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/testi2.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/testi2.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tietokantaharjoittelu2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tietokantaharjoittelu2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,7 +46,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.tietokantaharjoittelu2">
+  <component name="RunManager" selected="Python.tietokantaharjoittelu3">
     <configuration name="miinaharava (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -130,7 +131,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="veikkaus_konsoli" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tietokantaharjoittelu3" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="demo" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -142,7 +143,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/veikkaus_konsoli.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tietokantaharjoittelu3.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -153,11 +154,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tietokantaharjoittelu3" />
         <item itemvalue="Python.tietokantaharjoittelu2" />
         <item itemvalue="Python.miinaharava (1)" />
         <item itemvalue="Python.miinaharava" />
         <item itemvalue="Python.tietokantaharjoittelu" />
-        <item itemvalue="Python.veikkaus_konsoli" />
       </list>
     </recent_temporary>
   </component>
