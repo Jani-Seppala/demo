@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6ba562af-72ec-4a12-96d4-b1fa3d6de6a9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tietokantaharjoittelu3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/testi2.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/testi2.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tietokantaharjoittelu2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tietokantaharjoittelu2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tietokantaharjoittelu3.py" beforeDir="false" afterPath="$PROJECT_DIR$/tietokantaharjoittelu3.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -223,6 +221,31 @@
           <url>file://$PROJECT_DIR$/veikkaus_konsoli.py</url>
           <line>109</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
+          <line>243</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
+          <line>245</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
+          <line>247</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
+          <line>248</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
