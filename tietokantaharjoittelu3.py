@@ -1,10 +1,12 @@
 import sqlite3
+import pandas as pd
 
 """
 SELVITÄ miksi laske_yhteispisteet() pitää ajaa 2 kertaa jotta muutokset tulevat näkyviin konsoliin vaikka muutokset tulevat voimaan databaseen jo ekalla ajolla
 auttaako IS NULL?
-RATKAISE paivita_tulos() ottelutulosten päivitys niin että laske_yhteispisteet() laskee kaikki ottelut jotka on pelattu, eikä lopeta laskemista noneen
-TEE nickin uniikkiudelle tarkastus databasesta ja tarkista veikkaukset tutki_syote() funktion kautta
+SELVITÄ miksi pandas tulostaa otsikot eri riville tulostaessa
+luo_osallistuja funktion tiivistys niin että luodessa nickkiä, sqlite palauttaa samalla sen id:n?
+huom. ei bugi. Mikäli turnaus on käynnistynyt ja lisätään uusi veikkaaja siinä vaiheessa kun yhteispisteet() funktio on ajettu, ei uuden veikkaajan pisteitä enää lasketa menneistä otteluista
 """
 
 def alusta_tietokanta():
@@ -46,9 +48,9 @@ Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Po
 #                 ('Arg-Ice', ), ('Per-Den', ), ('Cro-Nig', ), ('Cos-Ser', ), ('Ger-Mex', )]
 
 Osallistujat_lista = [('Kingis', ), ('Matti', ), ('Jussi', )]
-Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'), (1, 5, '1-1'),
-                     (2, 1, '2-0'), (2, 2, '1-3'), (2, 3, '1-1'), (2, 4, '2-1'), (2, 5, '2-0'),
-                     (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0')]
+Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'), (1, 5, '1-1'), (1, 6, '3-1'), (1, 7, '1-2'),
+                     (2, 1, '2-0'), (2, 2, '1-3'), (2, 3, '1-1'), (2, 4, '2-1'), (2, 5, '2-0'), (2, 6, '3-0'), (2, 7, '1-2'),
+                     (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0'), (3, 6, '3-1'), (3, 7, '1-1'),]
 
 cur.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
 cur.executemany("INSERT INTO osallistujat(osallistuja) VALUES (?)", Osallistujat_lista)
@@ -210,18 +212,33 @@ def laske_yhteispisteet():
 
 
 def pistetilanne():
-    cur.execute("SELECT * FROM osallistujat")
-    print(cur.fetchall())
+    # cur.execute("SELECT osallistuja, pisteet FROM osallistujat ORDER BY pisteet DESC")
+    # [print(rivi) for rivi in cur.fetchall()]
+    # print(cur.fetchall())
+    print(pd.read_sql_query("SELECT osallistuja, pisteet FROM osallistujat ORDER BY pisteet DESC", conn, index_col="osallistuja"))
+
+
 
 
 def luo_osallistuja():
 
-    luotu_nimi = input("Anna nimi/nick jolla osallistut kisaan: ")
-    sql_luo_osallistuja_query = "INSERT INTO osallistujat(osallistuja) VALUES (?)"
-    osallistuja_data = (luotu_nimi, )
+    while True:
+        luotu_nimi = input("Anna nimi/nick jolla osallistut kisaan: ")
 
-    cur.execute(sql_luo_osallistuja_query, osallistuja_data)
-    conn.commit()
+        if len(luotu_nimi) < 20 and luotu_nimi:
+
+            try:
+                sql_luo_osallistuja_query = "INSERT INTO osallistujat(osallistuja) VALUES (?)"
+                osallistuja_data = (luotu_nimi,)
+                cur.execute(sql_luo_osallistuja_query, osallistuja_data)
+                conn.commit()
+                break
+
+            except sqlite3.Error:
+                print("Nimi on jo käytössä")
+
+        else:
+            print("Nimi ei saa olla tyhjä ja sen maksimipituus on 20 merkkiä")
 
     sql_valitse_osallistuja_query = "SELECT osallistuja_id FROM osallistujat WHERE osallistuja = ?"
     cur.execute(sql_valitse_osallistuja_query, osallistuja_data)
@@ -236,17 +253,18 @@ def luo_veikkaus(uusi_osallistuja_id):
     cur.execute(sql_hae_tulokset_query)
     data = cur.fetchall()
 
+    print(pd.read_sql_query(sql_hae_tulokset_query, conn, index_col="tulos_id"))
+
     osallistujan_veikkaukset = []
     for ottelu in data:
         ottelupari = ottelu[1]
         otteluid = ottelu[0]
-        print(ottelu[1])
-        osallistujan_veikkaus = input(f"Anna veikkaus ottelulle {ottelupari}: ")
+        print(f"Anna veikkaus ottelulle {ottelupari}: ")
+        osallistujan_veikkaus = tarkista_syote()
 
         osallistujan_veikkaukset.append((uusi_osallistuja_id, otteluid, osallistujan_veikkaus))
 
     sql_tallenna_veikkaukset_query = "INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)"
-    # veikkaus_data = (osallistujan_veikkaukset, )
     cur.executemany(sql_tallenna_veikkaukset_query, osallistujan_veikkaukset)
 
 

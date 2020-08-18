@@ -224,28 +224,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
-          <line>243</line>
-          <option name="timeStamp" value="13" />
+          <line>258</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
-          <line>245</line>
-          <option name="timeStamp" value="14" />
+          <line>259</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
-          <line>247</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
-          <line>248</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/tietokantaharjoittelu3.py</url>
-          <line>249</line>
-          <option name="timeStamp" value="17" />
+          <line>260</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
