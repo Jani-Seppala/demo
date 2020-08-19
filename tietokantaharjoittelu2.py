@@ -4,12 +4,12 @@ SEURAAVAKSI LISÄÄ KOKO PISTEENLASKU OMAAN FUNKTIOON?
 TESTAA pelattu SWITCHIN KÄYTTÖ TESTI2.DB
 """
 
-conn = sqlite3.connect(':memory:')
+CONN = sqlite3.connect(':memory:')
 # conn = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
 
-cur = conn.cursor()
+CUR = CONN.cursor()
 
-cur.execute("""CREATE TABLE IF NOT EXISTS tulokset(
+CUR.execute("""CREATE TABLE IF NOT EXISTS tulokset(
                         tulos_id INTEGER PRIMARY KEY,
                         ottelupari text,
                         tulos text NULL,
@@ -17,14 +17,14 @@ cur.execute("""CREATE TABLE IF NOT EXISTS tulokset(
                         )""")
 
 
-cur.execute("""CREATE TABLE IF NOT EXISTS osallistujat(
+CUR.execute("""CREATE TABLE IF NOT EXISTS osallistujat(
                         osallistuja_id INTEGER PRIMARY KEY,
                         osallistuja text UNIQUE,
                         pisteet integer
                         )""")
 
 
-cur.execute("""CREATE TABLE IF NOT EXISTS veikkaukset(
+CUR.execute("""CREATE TABLE IF NOT EXISTS veikkaukset(
                         veikkaus_id INTEGER PRIMARY KEY,
                         osallistuja_id integer,
                         tulos_id integer,
@@ -43,22 +43,22 @@ Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'),
                      (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0')]
 
 
-cur.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
-cur.executemany("INSERT INTO osallistujat(osallistuja, pisteet) VALUES (?, ?)", Osallistujat_lista)
-cur.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
-conn.commit()
+CUR.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
+CUR.executemany("INSERT INTO osallistujat(osallistuja, pisteet) VALUES (?, ?)", Osallistujat_lista)
+CUR.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
+CONN.commit()
 
 
-tulokset = cur.execute("SELECT * FROM tulokset ORDER BY tulos_id")
+tulokset = CUR.execute("SELECT * FROM tulokset ORDER BY tulos_id")
 tulokset = tulokset.fetchall()
 print(tulokset)
 
 # veikkaukset = cur.execute("SELECT * FROM veikkaukset ORDER BY osallistuja_id ASC, tulos_id ASC")
-veikkaukset = cur.execute("SELECT * FROM veikkaukset")
+veikkaukset = CUR.execute("SELECT * FROM veikkaukset")
 veikkaukset = veikkaukset.fetchall()
 print(veikkaukset)
 
-osallistujat = cur.execute("SELECT * FROM osallistujat ORDER BY osallistuja_id")
+osallistujat = CUR.execute("SELECT * FROM osallistujat ORDER BY osallistuja_id")
 osallistujat = osallistujat.fetchall()
 print(osallistujat)
 
@@ -111,8 +111,8 @@ for tulosrivi in tulokset:
                 continue
 
             elif not pelattu_switch:
-                cur.execute("UPDATE tulokset SET pelattu = ('{}') WHERE tulos_id = ('{}')".format(1, tulos_id))
-                conn.commit()
+                CUR.execute("UPDATE tulokset SET pelattu = ('{}') WHERE tulos_id = ('{}')".format(1, tulos_id))
+                CONN.commit()
 
                 pisteet = laske_pisteet(tulos, veikkaus)
 
@@ -120,15 +120,15 @@ for tulosrivi in tulokset:
                     print(f"lisätään {pisteet} pistettä osallistuja id:lle {osallistujat_dict[veikkaajan_id]}")
 
                     # HAE tämän hetkisen osallistujan pistetiedot, sijoita ne vanhat_pisteet muuttujaan, lisää siihen uudet pisteet
-                    cur.execute("SELECT pisteet FROM osallistujat WHERE osallistuja_id = ('{}')".format(veikkaajan_id))
-                    vanhat_pisteet = cur.fetchone()
+                    CUR.execute("SELECT pisteet FROM osallistujat WHERE osallistuja_id = ('{}')".format(veikkaajan_id))
+                    vanhat_pisteet = CUR.fetchone()
                     pisteet = vanhat_pisteet[0] + pisteet
 
                     # SIJOITA uudelleen lasketut pisteet takaisin tietokantaan saman osallistujan pistetietoihin
-                    cur.execute(
+                    CUR.execute(
                         "UPDATE osallistujat SET pisteet = ('{}') WHERE osallistuja_id = ('{}')".format(pisteet,
                                                                                                         veikkaajan_id))
-                    conn.commit()
+                    CONN.commit()
 
                 else:
                     print("Ei pisteitä...")
@@ -137,10 +137,10 @@ for tulosrivi in tulokset:
                 print("Ottelun pisteet on laskettu jo, siirrytään seuraavaan otteluun...")
 
 
-cur.execute("SELECT * FROM osallistujat")
-data2 = (cur.fetchall())
+CUR.execute("SELECT * FROM osallistujat")
+data2 = (CUR.fetchall())
 [print(row) for row in data2]
 
-cur.execute("SELECT * FROM tulokset")
-data = (cur.fetchall())
+CUR.execute("SELECT * FROM tulokset")
+data = (CUR.fetchall())
 [print(row) for row in data]

@@ -9,72 +9,69 @@ Komento veikkauksen lopetukselle ja tuloksen tallentamiselle niin että voi jatk
 SELVITÄ miksi pandas tulostaa otsikot eri riville tulostaessa
 luo_osallistuja funktion tiivistys niin että luodessa nickkiä, sqlite palauttaa samalla sen id:n?
 huom. ei bugi. Mikäli turnaus on käynnistynyt ja lisätään uusi veikkaaja siinä vaiheessa kun yhteispisteet() funktio on ajettu, ei uuden veikkaajan pisteitä enää lasketa menneistä otteluista
+Tietokannan yhteys luodaan automaattisesti ohjelman käynnistyessä ja se ei näy loppukäyttäjälle, admin paneelista voi kuitenkin muokata tietokantayhteyksiä
 """
 
 
 def alusta_tietokanta():
-    pass
+    global CONN
+    CONN = sqlite3.connect(':memory:')
+    # CONN = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
 
-# global CONN
-# CONN = sqlite3.connect(':memory:')
-CONN = sqlite3.connect(':memory:')
-# CONN = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
-
-# global CUR
-# CUR = CONN.cursor()
-CUR = CONN.cursor()
-CUR.executescript("""CREATE TABLE IF NOT EXISTS tulokset(
-                        tulos_id INTEGER PRIMARY KEY,
-                        ottelupari text,
-                        tulos text DEFAULT NULL,
-                        pelattu text DEFAULT NULL                        
-            );
-
-            CREATE TABLE IF NOT EXISTS osallistujat(
-                        osallistuja_id INTEGER PRIMARY KEY,
-                        osallistuja text UNIQUE,
-                        pisteet integer DEFAULT 0
-
-            );
-            CREATE TABLE IF NOT EXISTS veikkaukset(
-                        veikkaus_id INTEGER PRIMARY KEY,
-                        osallistuja_id integer,
-                        tulos_id integer,
-                        veikkaus text,
-                        FOREIGN KEY (osallistuja_id) REFERENCES osallistujat (osallistuja_id),
-                        FOREIGN KEY (tulos_id) REFERENCES tulokset (tulos_id)
-            );
-            """)
+    global CUR
+    CUR = CONN.cursor()
+    CUR.executescript("""CREATE TABLE IF NOT EXISTS tulokset(
+                            tulos_id INTEGER PRIMARY KEY,
+                            ottelupari text,
+                            tulos text DEFAULT NULL,
+                            pelattu text DEFAULT NULL                        
+                );
+    
+                CREATE TABLE IF NOT EXISTS osallistujat(
+                            osallistuja_id INTEGER PRIMARY KEY,
+                            osallistuja text UNIQUE,
+                            pisteet integer DEFAULT 0
+    
+                );
+                CREATE TABLE IF NOT EXISTS veikkaukset(
+                            veikkaus_id INTEGER PRIMARY KEY,
+                            osallistuja_id integer,
+                            tulos_id integer,
+                            veikkaus text,
+                            FOREIGN KEY (osallistuja_id) REFERENCES osallistujat (osallistuja_id),
+                            FOREIGN KEY (tulos_id) REFERENCES tulokset (tulos_id)
+                );
+                """)
 
 
-# Ottelu_lista = [('Rus-Sau'), ('Egt-Uru'), ('Mor-Ira'), ('Por-Spa'), ('Fra-Aus'), ('Arg-Ice'), ('Per-Den'), ('Cro-Nig'), ('Cos-Ser'), ('Ger-Mex')]
-Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', '3-3'), ('Fra-Aus', None),
-                ('Arg-Ice', None), ('Per-Den', None), ('Cro-Nig', None), ('Cos-Ser', None), ('Ger-Mex', None)]
-# Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', '3-3'), ('Fra-Aus', ),
-#                 ('Arg-Ice', ), ('Per-Den', ), ('Cro-Nig', ), ('Cos-Ser', ), ('Ger-Mex', )]
+    # Ottelu_lista = [('Rus-Sau'), ('Egt-Uru'), ('Mor-Ira'), ('Por-Spa'), ('Fra-Aus'), ('Arg-Ice'), ('Per-Den'), ('Cro-Nig'), ('Cos-Ser'), ('Ger-Mex')]
+    Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', '3-3'), ('Fra-Aus', None),
+                    ('Arg-Ice', None), ('Per-Den', None), ('Cro-Nig', None), ('Cos-Ser', None), ('Ger-Mex', None)]
+    # Ottelu_lista = [('Rus-Sau', '5-0'), ('Egt-Uru', '0-1'), ('Mor-Ira', '0-1'), ('Por-Spa', '3-3'), ('Fra-Aus', ),
+    #                 ('Arg-Ice', ), ('Per-Den', ), ('Cro-Nig', ), ('Cos-Ser', ), ('Ger-Mex', )]
 
-Osallistujat_lista = [('Kingis', ), ('Matti', ), ('Jussi', )]
-Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'), (1, 5, '1-1'), (1, 6, '3-1'), (1, 7, '1-2'),
-                     (2, 1, '2-0'), (2, 2, '1-3'), (2, 3, '1-1'), (2, 4, '2-1'), (2, 5, '2-0'), (2, 6, '3-0'), (2, 7, '1-2'),
-                     (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0'), (3, 6, '3-1'), (3, 7, '1-1'),]
+    Osallistujat_lista = [('Kingis', ), ('Matti', ), ('Jussi', )]
+    Veikkaukset_lista = [(1, 1, '2-0'), (1, 2, '1-2'), (1, 3, '1-1'), (1, 4, '1-2'), (1, 5, '1-1'), (1, 6, '3-1'), (1, 7, '1-2'),
+                         (2, 1, '2-0'), (2, 2, '1-3'), (2, 3, '1-1'), (2, 4, '2-1'), (2, 5, '2-0'), (2, 6, '3-0'), (2, 7, '1-2'),
+                         (3, 1, '1-1'), (3, 2, '1-2'), (3, 3, '2-1'), (3, 4, '2-2'), (3, 5, '3-0'), (3, 6, '3-1'), (3, 7, '1-1'),]
 
-CUR.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
-CUR.executemany("INSERT INTO osallistujat(osallistuja) VALUES (?)", Osallistujat_lista)
-CUR.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
-CONN.commit()
+    CUR.executemany("INSERT INTO tulokset(ottelupari, tulos) VALUES (?, ?)", Ottelu_lista)
+    CUR.executemany("INSERT INTO osallistujat(osallistuja) VALUES (?)", Osallistujat_lista)
+    CUR.executemany("INSERT INTO veikkaukset(osallistuja_id, tulos_id, veikkaus) VALUES (?, ?, ?)", Veikkaukset_lista)
+    CONN.commit()
 
-tulokset = CUR.execute("SELECT * FROM tulokset ORDER BY tulos_id")
-tulokset = tulokset.fetchall()
-print(tulokset)
+    tulokset = CUR.execute("SELECT * FROM tulokset ORDER BY tulos_id")
+    tulokset = tulokset.fetchall()
+    print(tulokset)
 
-# veikkaukset = cur.execute("SELECT * FROM veikkaukset ORDER BY osallistuja_id ASC, tulos_id ASC")
-veikkaukset = CUR.execute("SELECT * FROM veikkaukset")
-veikkaukset = veikkaukset.fetchall()
-print(veikkaukset)
+    # veikkaukset = cur.execute("SELECT * FROM veikkaukset ORDER BY osallistuja_id ASC, tulos_id ASC")
+    veikkaukset = CUR.execute("SELECT * FROM veikkaukset")
+    veikkaukset = veikkaukset.fetchall()
+    print(veikkaukset)
 
-osallistujat = CUR.execute("SELECT * FROM osallistujat ORDER BY osallistuja_id")
-osallistujat = osallistujat.fetchall()
-print(osallistujat)
+    osallistujat = CUR.execute("SELECT * FROM osallistujat ORDER BY osallistuja_id")
+    osallistujat = osallistujat.fetchall()
+    print(osallistujat)
 
 
 def laske_ottelu_pisteet(tulos, veikkaus):
