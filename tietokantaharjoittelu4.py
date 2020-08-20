@@ -1,19 +1,24 @@
 import sqlite3
-
 import pandas as pd
+import bcrypt
+import getpass
+import admin
 
 """
-SELVITÄ miksi laske_yhteispisteet() pitää ajaa 2 kertaa jotta muutokset tulevat näkyviin konsoliin vaikka muutokset tulevat voimaan databaseen jo ekalla ajolla
-auttaako IS NULL?
+- SELVITÄ miksi laske_yhteispisteet() pitää ajaa 2 kertaa jotta muutokset tulevat näkyviin konsoliin vaikka muutokset tulevat voimaan databaseen jo ekalla ajolla
+- auttaako IS NULL?
 Komento veikkauksen lopetukselle ja tuloksen tallentamiselle niin että voi jatkaa myöhemmin?
 SELVITÄ miksi pandas tulostaa otsikot eri riville tulostaessa
 luo_osallistuja funktion tiivistys niin että luodessa nickkiä, sqlite palauttaa samalla sen id:n?
 huom. ei bugi. Mikäli turnaus on käynnistynyt ja lisätään uusi veikkaaja siinä vaiheessa kun yhteispisteet() funktio on ajettu, ei uuden veikkaajan pisteitä enää lasketa menneistä otteluista
 Tietokannan yhteys luodaan automaattisesti ohjelman käynnistyessä ja se ei näy loppukäyttäjälle, admin paneelista voi kuitenkin muokata tietokantayhteyksiä
+getpass ja erillinen username/pass word tiedosto adminille sekä oma käyttöliittymä loppukäyttäjälle ja adminiklle
+turnauksen käynnistyttyä loppukäyttäjälle näkyviin vain pistetulokset
+en saa getpassia toimimaan, säädäpä sitä ensi kerralla jos jaksat
 """
 
 
-def alusta_tietokanta():
+def luo_yhteys():
     global CONN
     CONN = sqlite3.connect(':memory:')
     # CONN = sqlite3.connect(r"C:\Users\Kingi\Ohjelmointi\Bootcamp\demo\db\testi2.db")
@@ -183,15 +188,28 @@ def laske_yhteispisteet():
     veikkaukset = veikkaukset.fetchall()
 
     for tulosrivi in tulokset:
+        pelattu_switch = tulosrivi[3]
+        tulos = tulosrivi[2]
+        tulokset_tulos_id = tulosrivi[0]
+
+        if not tulos:
+            continue
+
+        elif not pelattu_switch:
+            sql_update_pelattu_query = "UPDATE tulokset SET pelattu = ? WHERE tulos_id = ?"
+            pelattu_data = (True, tulokset_tulos_id)
+            CUR.execute(sql_update_pelattu_query, pelattu_data)
+            CONN.commit()
+
+        else:
+            continue
+
         for veikkausrivi in veikkaukset:
-            # JOS ottelun id == osallistujan veikkaaman ottelun id
-            if tulosrivi[0] == veikkausrivi[2]:
+            veikkaajan_id = veikkausrivi[1]
+            veikkaukset_tulos_id = veikkausrivi[2]
+            veikkaus = veikkausrivi[3]
+            if tulokset_tulos_id == veikkaukset_tulos_id:
                 print("------------")
-                tulos_id = tulosrivi[0]
-                tulos = tulosrivi[2]
-                pelattu_switch = tulosrivi[3]
-                veikkaajan_id = veikkausrivi[1]
-                veikkaus = veikkausrivi[3]
 
                 sql_osallistuja_nimi_query = "SELECT osallistuja FROM osallistujat WHERE osallistuja_id = ?"
                 data = (veikkaajan_id, )
@@ -200,37 +218,26 @@ def laske_yhteispisteet():
 
                 print(f"{sql_exe} veikkaus {veikkaus} otteluun {tulosrivi[1]}, tulos {tulos}")
 
-                if not tulos:
-                    continue
+                pisteet = laske_ottelu_pisteet(tulos, veikkaus)
 
-                elif not pelattu_switch:
-                    sql_update_pelattu_query = "UPDATE tulokset SET pelattu = ? WHERE tulos_id = ?"
-                    pelattu_data = (True, tulos_id)
-                    CUR.execute(sql_update_pelattu_query, pelattu_data)
+                if pisteet > 0:
 
-                    pisteet = laske_ottelu_pisteet(tulos, veikkaus)
+                    print(f"lisätään {pisteet} pistettä osallistuja id:lle {sql_exe}")
 
-                    if pisteet > 0:
-
-                        print(f"lisätään {pisteet} pistettä osallistuja id:lle {sql_exe}")
-
-                        # HAE tämän hetkisen osallistujan pistetiedot ja päivitä ne
-                        sql_paivita_pisteet_query = "UPDATE osallistujat SET pisteet = pisteet + ? WHERE osallistuja_id = ?"
-                        paivita_pisteet_data = (pisteet, veikkaajan_id)
-                        CUR.execute(sql_paivita_pisteet_query, paivita_pisteet_data)
-                        CONN.commit()
-
-                    else:
-                        print("Ei pisteitä...")
+                    # HAE tämän hetkisen osallistujan pistetiedot ja päivitä ne
+                    sql_paivita_pisteet_query = "UPDATE osallistujat SET pisteet = pisteet + ? WHERE osallistuja_id = ?"
+                    paivita_pisteet_data = (pisteet, veikkaajan_id)
+                    CUR.execute(sql_paivita_pisteet_query, paivita_pisteet_data)
+                    CONN.commit()
 
                 else:
-                    print("Ottelun pisteet on laskettu jo, siirrytään seuraavaan otteluun...")
+                    print("Ei pisteitä...")
 
     CUR.execute("SELECT * FROM osallistujat")
     print(CUR.fetchall())
 
     CUR.execute("SELECT * FROM tulokset")
-    print(tulokset)
+    print(CUR.fetchall())
 
 
 def tulosta_tiedot(syote):
@@ -289,30 +296,17 @@ def luo_veikkaus(uusi_osallistuja_id):
     CUR.executemany(sql_tallenna_veikkaukset_query, osallistujan_veikkaukset)
 
 
-def main():
-    # Ohjelma aloitetaan kysymällä käyttäjältä mitä tämä haluaa tehdä, '(U)usi peli' aloittaa uuden pelin,
-    # '(T)ilastot' avaa pelattujen pelien tilastoja. '(L)opeta.' lopettaa ohjelman suorituksen.
+def admin_kirjautuminen():
+
     while True:
+        # user = input("Anna käyttäjätunnus")
         print('----------------------------')
-        print('Tervetuloa Futisveikkaukseen.')
-        print('(A)lusta uusi tietokanta')
-        print('(M)uokkaa ottelutuloksia')
-        print('(L)aske yhteispisteet')
+        text_pwd = input("Anna salasana tai palaa alkuvalikkoon painamalla enteriä")
+        # text_pwd = getpass.getpass(prompt='Anna salasana tai palaa alkuvalikkoon painamalla enteriä')
+        text_pwd = bytes(text_pwd, encoding='utf8')
 
-        print('(O)sallistu veikkaukseen')
-        print('(P)istetilanne')
-        print('(Q)uit')
-
-        syote = input('Tee Valintasi.').lower()
-        if syote == 'a':
-            alusta_tietokanta()
-        elif syote == 'l':
-            laske_yhteispisteet()
-        elif syote == 'o':
-            luo_osallistuja()
-        elif syote == 'p':
-            tulosta_tiedot(syote)
-        elif syote == 'm':
+        if bcrypt.checkpw(text_pwd, admin.hash_salasana):
+            print('match')
             while True:
                 print('----------------------------')
                 print('Voit joko lisätä uusia otteluita, päivittää tuloksia tai tulostaa ottelulistan')
@@ -320,18 +314,48 @@ def main():
                 print('(L)isää uusi ottelu')
                 print('(P)äivitä ottelun tulos')
                 print('(T)ulosta ottelulista')
+                print('Laske (Y)hteispisteet')
                 muokkaus_syote = input('Tee valintasi').lower()
                 if muokkaus_syote == 'p':
                     paivita_tulos()
+                if muokkaus_syote == 'y':
+                    laske_yhteispisteet()
                 elif muokkaus_syote == 'l':
                     lisaa_ottelu()
                 elif muokkaus_syote == 't':
                     tulosta_tiedot(muokkaus_syote)
                 else:
-                    break
+                    return
+
+        elif not text_pwd:
+            break
+
+        else:
+            print('no match')
+
+
+def main():
+    # Ohjelman alussa luomme yhteyden databaseen, joka on määritelty etukäteen
+    luo_yhteys()
+    while True:
+        print('----------------------------')
+        print('Tervetuloa Futisveikkaukseen.')
+        print('(O)sallistu veikkaukseen')
+        print('(P)istetilanne')
+        print('(Q)uit')
+        print('(A)dmin kirjautuminen')
+        syote = input('Tee Valintasi.').lower()
+
+        if syote == 'o':
+            luo_osallistuja()
+        elif syote == 'p':
+            tulosta_tiedot(syote)
         elif syote == 'q':
             # exit()
             break
+        elif syote == 'a':
+            admin_kirjautuminen()
+
         else:
             print('Laiton valinta')
 
