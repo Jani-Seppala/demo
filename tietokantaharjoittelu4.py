@@ -15,6 +15,7 @@ Tietokannan yhteys luodaan automaattisesti ohjelman käynnistyessä ja se ei nä
 getpass ja erillinen username/pass word tiedosto adminille sekä oma käyttöliittymä loppukäyttäjälle ja adminiklle
 turnauksen käynnistyttyä loppukäyttäjälle näkyviin vain pistetulokset
 en saa getpassia toimimaan, säädäpä sitä ensi kerralla jos jaksat
+tutki laske_ottelut_pisteet() meneekö 50-50 maalimäärät oikein?
 """
 
 
