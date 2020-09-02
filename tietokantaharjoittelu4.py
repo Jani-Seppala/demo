@@ -81,6 +81,20 @@ def luo_yhteys():
 
 
 def laske_ottelu_pisteet(tulos, veikkaus):
+    """Parametreinä tulos ja veikkaus jotka ovat molemmat 3 merkin pituisia merkkijonoja
+    Funktio toimii oikein niin kauan kuin tuloksen maalimäärinä on yksittäisiä kokonaislukuja
+    esim. "1-2", "0-9", "8-5". Ongelmia alkaa tulemaan mikäli tuloksena on esim "10-0".
+    Tällöin merkkijono on 4 merkin pituinen.
+
+    Ko. tulosta vertailtaisiin ottamalla ensimmäinen merkki eli "1" ja kolmas merkki eli "-"
+    Funktio ei siltikään anna virhettä koska pythonissa voidaan vertailla myös eri merkkejä keskenään
+    Python arvottaa "1" merkin isommaksi kuin "-" merkin joten funktio tuottaisi tässä tapauksessa
+    oikean tuloksen mutta sen toiminto ei ole haluttua ja luultavasti aiheuttaisi vääriä tuloksia jossain vaiheessa
+
+    Ongelmaan on helppo ratkaisu, tulos ja veikkaus merkkijonot halkaistaan "-" merkin kohdalta split metodilla ja
+    otamme vasemmalla puolella olevat numerot kotijoukkueen maalimääräksi ja oikealla puolelle olevat numerot
+    vierasjoukkueen maalimääriksi. Tämän jälkeen funktio toimii oikein kaikilla maalimäärillä mitä sille annetaan.
+    """
     pisteet = 0
 
     if tulos[0] < tulos[2]:
@@ -299,17 +313,17 @@ def luo_veikkaus(uusi_osallistuja_id):
 
 def admin_kirjautuminen():
 
-    while True:
-        # user = input("Anna käyttäjätunnus")
-        print('----------------------------')
-        text_pwd = input("Anna salasana tai palaa alkuvalikkoon painamalla enteriä")
-        # text_pwd = getpass.getpass(prompt='Anna salasana tai palaa alkuvalikkoon painamalla enteriä')
-        text_pwd = bytes(text_pwd, encoding='utf8')
-
-        if bcrypt.checkpw(text_pwd, admin.hash_salasana):
-            print('match')
+    # while True:
+    #     # user = input("Anna käyttäjätunnus")
+    #     print('----------------------------')
+    #     text_pwd = input("Anna salasana tai palaa alkuvalikkoon painamalla enteriä")
+    #     # text_pwd = getpass.getpass(prompt='Anna salasana tai palaa alkuvalikkoon painamalla enteriä')
+    #     text_pwd = bytes(text_pwd, encoding='utf8')
+    #
+    #     if bcrypt.checkpw(text_pwd, admin.hash_salasana):
+    #         print('match')
             while True:
-                print('----------------------------')
+                print('--------ADMIN-PANEELI----------')
                 print('Voit joko lisätä uusia otteluita, päivittää tuloksia tai tulostaa ottelulistan')
                 print('Palaa alkuvalikkoon painamalla enteriä')
                 print('(L)isää uusi ottelu')
@@ -325,14 +339,16 @@ def admin_kirjautuminen():
                     lisaa_ottelu()
                 elif muokkaus_syote == 't':
                     tulosta_tiedot(muokkaus_syote)
-                else:
+                elif muokkaus_syote == '':
                     return
+                else:
+                    print("Laiton valinta")
 
-        elif not text_pwd:
-            break
-
-        else:
-            print('no match')
+        # elif not text_pwd:
+        #     break
+        #
+        # else:
+        #     print('no match')
 
 
 def main():
