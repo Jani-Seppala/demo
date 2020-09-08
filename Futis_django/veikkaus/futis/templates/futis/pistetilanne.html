@@ -1,0 +1,17 @@
+{% extends 'futis/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Pistetilanne</h1>
+
+<ul>
+{% for elementti in osallistujat_list %}
+    <li><a href="{% url 'futis:veikkaus' elementti.id %}">{{ elementti.osallistuja }}</a></li>
+    <li>{{ elementti.pisteet }}</li>
+    <br>
+{% endfor %}
+</ul>
+
+{% endblock %}

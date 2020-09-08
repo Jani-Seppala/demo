@@ -1,2 +1,0 @@
-# demo
-Konsoliappsi futisveikkaukseen

@@ -1,0 +1,18 @@
+{% extends 'futis/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+        <h1>Rekisteröintikaavake</h1>
+
+        <div class="content-section">
+            <form method="POST" class="form-group">
+                {% csrf_token %}
+                <legend class="border-bottom mb-3">Luo tunnuksesi</legend>
+                {{form|crispy}}
+                <button name="create", type="submit", class="btn btn-success">Rekisteröi</button>
+            </form>
+        </div>
+
+{% endblock %}

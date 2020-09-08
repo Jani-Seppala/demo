@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6ba562af-72ec-4a12-96d4-b1fa3d6de6a9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo_projekti.odt" beforeDir="false" afterPath="$PROJECT_DIR$/demo_projekti.odt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tietokantaharjoittelu4.py" beforeDir="false" afterPath="$PROJECT_DIR$/tietokantaharjoittelu4.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +30,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../futisveikkaus" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Futis_django" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">

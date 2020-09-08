@@ -5,8 +5,6 @@ import getpass
 import admin
 
 """
-- SELVITÄ miksi laske_yhteispisteet() pitää ajaa 2 kertaa jotta muutokset tulevat näkyviin konsoliin vaikka muutokset tulevat voimaan databaseen jo ekalla ajolla
-- auttaako IS NULL?
 Komento veikkauksen lopetukselle ja tuloksen tallentamiselle niin että voi jatkaa myöhemmin?
 SELVITÄ miksi pandas tulostaa otsikot eri riville tulostaessa
 luo_osallistuja funktion tiivistys niin että luodessa nickkiä, sqlite palauttaa samalla sen id:n?

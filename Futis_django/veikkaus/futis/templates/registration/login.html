@@ -1,0 +1,14 @@
+{% extends "futis/base.html"%}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<div class="content-section">
+		<form method="POST" class="form-group">
+			{% csrf_token %}
+            {{form|crispy}}
+            <p>Jos sinulla ei ole tunnusta, luo se <a href="/futis/register">täältä!</a></p>
+			<button type="submit" class="btn btn-success">Login</button>
+		</form>
+	</div>
+{% endblock %}
