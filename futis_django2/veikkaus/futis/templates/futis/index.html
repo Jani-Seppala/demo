@@ -1,0 +1,16 @@
+{% extends 'futis/base.html' %}
+
+{% block content %}
+
+<div class="card-columns">
+    {% for elementti in tulokset_list %}
+    <div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ elementti.ottelupari }}</h5>
+        <p class="card-text">Tulos: {{ elementti.tulos }}</p>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

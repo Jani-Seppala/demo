@@ -16,10 +16,8 @@ def index(request):
 
 
 def pistetilanne(request):
-    # osallistujat_list = Osallistujat.objects.order_by()[:5]
     osallistujat_list = Profile.objects.all()
     context = {'osallistujat_list': osallistujat_list}
-    # output = ', '.join([o.osallistuja for o in osallistujat_list])
     print(osallistujat_list)
 
     return render(request, 'futis/pistetilanne.html', context)
@@ -54,24 +52,18 @@ def luo_veikkaus(request):
 
 
 def luo_veikkaus_beta(request):
-    # AuthorFormSet = modelformset_factory(Author, fields=('name', 'title'))
     VeikkauksetFormSet = modelformset_factory(Veikkaukset, fields='__all__')
     if request.method == 'POST':
         formset = VeikkauksetFormSet(request.POST, request.FILES)
-        # formset = VeikkauksetFormSet(request.POST, request.FILES, queryset=Veikkaukset.objects.filter(osallistujat__startswith='K'))
         if formset.is_valid():
             formset.save()
             return redirect('/futis')
     else:
-        # formset = VeikkauksetFormSet(queryset=Veikkaukset.objects.filter(osallistujat__startswith='K'))
         formset = VeikkauksetFormSet()
     return render(request, 'futis/luo_veikkaus_beta.html', {'formset': formset})
 
 
 def veikkaukset(request, pk):
-    # veikkauksetdetailview_list = Veikkaukset.objects.all()
-    # veikkauksetdetailview_list = Veikkaukset.objects.osallistujat.get(pk=id)
-    # veikkauksetdetailview_list = Veikkaukset.objects.get(osallistujat_id=id)
     veikkaus_query = Veikkaukset.objects.filter(osallistujat_id=pk)
     context = {'veikkaus_query': veikkaus_query}
     return render(request, 'futis/veikkaus.html', context)

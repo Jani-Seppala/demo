@@ -1,8 +1,5 @@
-import datetime
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
-from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -12,7 +9,7 @@ class Profile(models.Model):
     pisteet = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 @receiver(post_save, sender=User)
@@ -36,7 +33,6 @@ class Tulokset(models.Model):
 
 
 class Veikkaukset(models.Model):
-    # osallistuja = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     osallistuja = models.ForeignKey(Profile, on_delete=models.CASCADE)
     tulokset = models.ForeignKey(Tulokset, on_delete=models.CASCADE)
     veikkaus = models.CharField(max_length=5)
@@ -44,12 +40,3 @@ class Veikkaukset(models.Model):
     def __str__(self):
         return self.veikkaus
 
-
-# class Osallistujat(models.Model):
-#     osallistuja = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#     # osallistuja = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-#     # osallistuja = models.CharField(max_length=30, unique=True)
-#     pisteet = models.IntegerField(default=0)
-#
-#     def __str__(self):
-#         return self.osallistuja

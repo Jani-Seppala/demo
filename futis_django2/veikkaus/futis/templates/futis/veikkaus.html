@@ -1,0 +1,28 @@
+{% extends 'futis/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>Käyttäjän veikkaukset</h1>
+
+<br>
+<br>
+
+<div class="card-columns">
+    {% for elementti in veikkaus_query %}
+    <div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ elementti.tulokset }}</h5>
+        <p class="card-text">Veikkaus: {{ elementti.veikkaus }}</p>
+        <p class="card-text">Tulos: </p>
+      <div class="card-footer bg-transparent border-dark">
+        <p class="card-text">Pisteet: 0</p>
+      </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

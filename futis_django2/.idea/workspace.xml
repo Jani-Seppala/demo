@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ed637deb-a3b4-4d48-a957-8082a4efd3e2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Futis_django/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veikkaus/futis/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/veikkaus/futis/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/.idea/Futis_django.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/.idea/Futis_django.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/migrations/0002_auto_20200828_1858.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/futis/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Futis_django/veikkaus/veikkaus/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Futis_django/veikkaus/veikkaus/settings.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JupyterTrust" id="c6cda99c-deae-46b6-8835-8863bc7e3ed9" />
+  <component name="ProjectId" id="1hJHxI9pHPae3O3X9eZNkBPCsJz" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ed637deb-a3b4-4d48-a957-8082a4efd3e2" name="Default Changelist" comment="" />
+      <created>1599722519223</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1599722519223</updated>
+      <workItem from="1599722520263" duration="1811000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
